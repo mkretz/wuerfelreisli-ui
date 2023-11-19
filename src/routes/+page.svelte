@@ -81,10 +81,10 @@
 	<div class="space-y-10 w-full flex flex-col items-center">
 		<h3 class="h3">Dein nächster Zug</h3>
 		{#if !legInProgress}
-			<div class="grid grid-flow-col grid-cols-4 gap-4 w-4/5">
+			<div class="grid grid-flow-col grid-cols-4 gap-4 w-4/5 h-48 content-center">
 				<div class="col-span-3">
 					<input
-						class="input autocomplete h-full"
+						class="input autocomplete"
 						type="search"
 						name="autocomplete-search"
 						bind:value={nextDepartureStation}
@@ -98,37 +98,41 @@
 					<!-- 	/> -->
 					<!-- </div> -->
 				</div>
-				<button type="button" class="btn variant-filled-primary" on:click={toggleLegInProgress}>
-					<Fa icon={faDice} size="2x" />
-					<span>würfeln</span>
-				</button>
+				<div>
+					<button type="button" class="btn variant-filled-primary" on:click={toggleLegInProgress}>
+						<Fa icon={faDice} size="2x" />
+						<span>würfeln</span>
+					</button>
+				</div>
 			</div>
 		{/if}
 		{#if legInProgress}
-			<div class="w-4/5 card">
-				<section class="p-10">
-					<div class="grid grid-cols-3 gap-4">
-						<div class="text-left">
-							{currentLeg.departureStation} ab {currentLeg.departureTime}, Gleis {currentLeg.departurePlatform}
+			<div class="w-4/5 h-48 space-y-5 content-center">
+				<div class="w-full card">
+					<section class="p-10">
+						<div class="grid grid-cols-3 gap-4">
+							<div class="text-left">
+								{currentLeg.departureStation} ab {currentLeg.departureTime}, Gleis {currentLeg.departurePlatform}
+							</div>
+							<div class="text-center">{currentLeg.trainDesignation}</div>
+							<div class="text-right">
+								{currentLeg.arrivalStation} an {currentLeg.departureTime} Gleis {currentLeg.arrivalPlatform}
+							</div>
 						</div>
-						<div class="text-center">{currentLeg.trainDesignation}</div>
-						<div class="text-right">
-							{currentLeg.arrivalStation} an {currentLeg.departureTime} Gleis {currentLeg.arrivalPlatform}
-						</div>
-					</div>
-				</section>
-			</div>
-			<div class="grid grid-flow-col grid-cols-4 gap-4 w-4/5">
-				<button type="button" class="btn variant-filled-primary col-span-3">
-					<span>angekommen</span>
-				</button>
-				<button
-					type="button"
-					class="btn variant-filled-error col-span-1"
-					on:click={toggleLegInProgress}
-				>
-					<span>neu würfeln</span>
-				</button>
+					</section>
+				</div>
+				<div class="grid grid-flow-col grid-cols-4 gap-4 w-full">
+					<button type="button" class="btn variant-filled-primary col-span-3">
+						<span>angekommen</span>
+					</button>
+					<button
+						type="button"
+						class="btn variant-filled-error col-span-1"
+						on:click={toggleLegInProgress}
+					>
+						<span>neu würfeln</span>
+					</button>
+				</div>
 			</div>
 		{/if}
 		<h3 class="h3">Dein bisheriges Reisli</h3>

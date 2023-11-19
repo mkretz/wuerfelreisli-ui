@@ -2,7 +2,7 @@
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import { faCog } from '@fortawesome/free-solid-svg-icons'; 
+	import { faCog } from '@fortawesome/free-solid-svg-icons';
 </script>
 
 <!-- App Shell -->
@@ -14,13 +14,8 @@
 				<strong class="text-xl uppercase">wuerfelreisli</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
-					target="_blank"
-					rel="noreferrer"
-				>
-					<Fa icon={ faCog } size="2x" />
+				<a class="btn btn-sm variant-ghost-surface" href="https://github.com/skeletonlabs/skeleton">
+					<Fa icon={faCog} size="2x" />
 				</a>
 			</svelte:fragment>
 		</AppBar>
