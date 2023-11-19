@@ -4,15 +4,15 @@
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { faDice } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	let pastLegs: Leg[] = [
+	let testLegs: Leg[] = [
 		{
-			departureStation: 'Neuchatel',
-			departureTime: '13:00',
-			departurePlatform: '7',
-			trainDesignation: 'IC326',
-			arrivalStation: 'Genf',
-			arrivalTime: '14:15',
-			arrivalPlatform: '7'
+			departureStation: 'Gümligen',
+			departureTime: '10:32',
+			departurePlatform: '2',
+			trainDesignation: 'RE203',
+			arrivalStation: 'Laupen',
+			arrivalTime: '11:15',
+			arrivalPlatform: '3'
 		},
 		{
 			departureStation: 'Laupen',
@@ -24,25 +24,29 @@
 			arrivalPlatform: '5'
 		},
 		{
-			departureStation: 'Gümligen',
-			departureTime: '10:32',
-			departurePlatform: '2',
-			trainDesignation: 'RE203',
-			arrivalStation: 'Laupen',
-			arrivalTime: '11:15',
-			arrivalPlatform: '3'
+			departureStation: 'Neuchatel',
+			departureTime: '13:00',
+			departurePlatform: '7',
+			trainDesignation: 'IC326',
+			arrivalStation: 'Genf',
+			arrivalTime: '14:15',
+			arrivalPlatform: '7'
+		},
+		{
+			departureStation: 'Genf',
+			departureTime: '14:25',
+			departurePlatform: '7',
+			trainDesignation: 'IC5',
+			arrivalStation: 'Bern',
+			arrivalTime: '16:12',
+			arrivalPlatform: '7'
 		}
 	];
+	let pastLegs: Leg[] = [];
 
-	let currentLeg: Leg = {
-		departureStation: 'Genf',
-		departureTime: '14:25',
-		departurePlatform: '7',
-		trainDesignation: 'IC5',
-		arrivalStation: 'Bern',
-		arrivalTime: '16:12',
-		arrivalPlatform: '7'
-	};
+	let currentLeg: Leg;
+
+	let testLegIndex = 0;
 
 	let popupSettings: PopupSettings = {
 		event: 'focus-click',
@@ -72,8 +76,25 @@
 
 	let legInProgress = false;
 
-	function toggleLegInProgress() {
-		legInProgress = legInProgress ? false : true;
+	function assignNextLeg() {
+		currentLeg = testLegs[testLegIndex];
+		testLegIndex++;
+		nextDepartureStation = currentLeg.arrivalStation;
+		legInProgress = true;
+	}
+
+	function cancelCurrentLeg() {
+		testLegIndex--;
+		nextDepartureStation = '';
+		legInProgress = false;
+	}
+
+	function completeCurrentLeg() {
+		legInProgress = false;
+		let newPastLegs = pastLegs;
+		newPastLegs.push(currentLeg);
+		pastLegs = newPastLegs;
+		pastLegs.sort((a: Leg, b: Leg) => b.arrivalTime.localeCompare(a.arrivalTime));
 	}
 </script>
 
@@ -99,7 +120,7 @@
 					<!-- </div> -->
 				</div>
 				<div>
-					<button type="button" class="btn variant-filled-primary" on:click={toggleLegInProgress}>
+					<button type="button" class="btn variant-filled-primary" on:click={assignNextLeg}>
 						<Fa icon={faDice} size="2x" />
 						<span>würfeln</span>
 					</button>
@@ -122,13 +143,17 @@
 					</section>
 				</div>
 				<div class="grid grid-flow-col grid-cols-4 gap-4 w-full">
-					<button type="button" class="btn variant-filled-primary col-span-3">
+					<button
+						type="button"
+						class="btn variant-filled-primary col-span-3"
+						on:click={completeCurrentLeg}
+					>
 						<span>angekommen</span>
 					</button>
 					<button
 						type="button"
 						class="btn variant-filled-error col-span-1"
-						on:click={toggleLegInProgress}
+						on:click={cancelCurrentLeg}
 					>
 						<span>neu würfeln</span>
 					</button>
